@@ -1,0 +1,65 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  background: #4CAF50;
+  color: white;
+  padding: 15px;
+  text-align: center;
+}
+
+/* Flex container for sidebar + main */
+.container {
+  display: flex;
+  flex: 1;
+  justify-content: flex-start;  /* Try: center, space-between, etc. */
+  align-items: stretch;          /* Try: flex-start, center, baseline */
+  background: #f2f2f2;
+}
+
+/* Sidebar */
+.sidebar {
+  background: #ddd;
+  padding: 20px;
+  width: 200px;
+  flex-shrink: 0; /* Prevent sidebar from shrinking */
+}
+
+/* Main content */
+.main-content {
+  background: #fff;
+  padding: 20px;
+  flex: 1; /* Take up remaining space */
+}
+
+/* Footer */
+.footer {
+  background: #333;
+  color: white;
+  text-align: center;
+  padding: 10px;
+}
+
+/* Responsive adjustments for small screens */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column; /* Stack sidebar and content vertically */
+  }
+
+  .sidebar {
+    width: 100%; /* Full width on small screens */
+  }
+}
