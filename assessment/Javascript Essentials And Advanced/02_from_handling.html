@@ -1,0 +1,151 @@
+<script>
+class CustomerFormHandler {
+  constructor(formId, messageBoxId) {
+    this.form = document.getElementById(formId);
+    this.messageBox = document.getElementById(messageBoxId);
+
+    this.fields = {
+      name: this.form.querySelector("#fullName"),
+      phone: this.form.querySelector("#phone"),
+      email: this.form.querySelector("#email"),
+      vehicle: this.form.querySelector("#vehicle"),
+      complaint: this.form.querySelector("#complaint"),
+    };
+
+    this.initEvents();
+  }
+
+  initEvents() {
+    // Event delegation: real-time validation
+    this.form.addEventListener("input", (e) => {
+      if (e.target.matches("input, textarea, select")) {
+        this.validateField(e.target);
+      }
+    });
+
+    this.form.addEventListener("blur", (e) => {
+      if (e.target.matches("input, textarea, select")) {
+        this.validateField(e.target);
+      }
+    }, true);
+
+    // Submit handler
+    this.form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (this.validateForm()) {
+        this.saveToLocalStorage();
+        this.showMessage("Form submitted successfully!", "success");
+        this.clearForm();
+      } else {
+        this.showMessage("Please fix the errors in the form.", "error");
+      }
+    });
+  }
+
+  // ---------------- Validation ----------------
+  validateForm() {
+    let isValid = true;
+
+    // Name ≥ 3 characters
+    if (this.fields.name.value.trim().length < 3) {
+      this.setError(this.fields.name, "Name must be at least 3 characters");
+      isValid = false;
+    } else this.clearError(this.fields.name);
+
+    // Phone exactly 10 digits
+    const phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(this.fields.phone.value.trim())) {
+      this.setError(this.fields.phone, "Phone must be exactly 10 digits");
+      isValid = false;
+    } else this.clearError(this.fields.phone);
+
+    // Valid email (Regex)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(this.fields.email.value.trim())) {
+      this.setError(this.fields.email, "Enter a valid email");
+      isValid = false;
+    } else this.clearError(this.fields.email);
+
+    // Vehicle not empty
+    if (!this.fields.vehicle.value) {
+      this.setError(this.fields.vehicle, "Select vehicle details");
+      isValid = false;
+    } else this.clearError(this.fields.vehicle);
+
+    // Complaint ≥ 10 characters
+    if (this.fields.complaint.value.trim().length < 10) {
+      this.setError(this.fields.complaint, "Complaint must be at least 10 characters");
+      isValid = false;
+    } else this.clearError(this.fields.complaint);
+
+    return isValid;
+  }
+
+  validateField(field) {
+    const { name, phone, email, vehicle, complaint } = this.fields;
+
+    if (field === name && field.value.trim().length < 3) this.setError(field);
+    else if (field === name) this.clearError(field);
+
+    if (field === phone && !/^\d{10}$/.test(field.value.trim())) this.setError(field);
+    else if (field === phone) this.clearError(field);
+
+    if (field === email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value.trim())) this.setError(field);
+    else if (field === email) this.clearError(field);
+
+    if (field === vehicle && !field.value) this.setError(field);
+    else if (field === vehicle) this.clearError(field);
+
+    if (field === complaint && field.value.trim().length < 10) this.setError(field);
+    else if (field === complaint) this.clearError(field);
+  }
+
+  // ---------------- UI Helpers ----------------
+  setError(field, msg = "") {
+    field.classList.add("error-border");
+    if (msg) field.title = msg;
+  }
+
+  clearError(field) {
+    field.classList.remove("error-border");
+    field.title = "";
+  }
+
+  showMessage(message, type) {
+    this.messageBox.textContent = message;
+    this.messageBox.className = `message ${type}`;
+    this.messageBox.style.display = "block";
+
+    setTimeout(() => {
+      this.messageBox.style.display = "none";
+    }, 3000);
+  }
+
+  // ---------------- Storage ----------------
+  saveToLocalStorage() {
+    const data = {
+      name: this.fields.name.value.trim(),
+      phone: this.fields.phone.value.trim(),
+      email: this.fields.email.value.trim(),
+      vehicle: this.fields.vehicle.value,
+      complaint: this.fields.complaint.value.trim(),
+      time: new Date().toISOString()
+    };
+
+    const existing = JSON.parse(localStorage.getItem("customerForms")) || [];
+    existing.push(data);
+    localStorage.setItem("customerForms", JSON.stringify(existing));
+  }
+
+  // ---------------- Reset ----------------
+  clearForm() {
+    this.form.reset();
+    this.form.querySelectorAll(".error-border").forEach(el => el.classList.remove("error-border"));
+  }
+}
+
+// Initialize after DOM load
+document.addEventListener("DOMContentLoaded", () => {
+  new CustomerFormHandler("customerForm", "messageBox");
+});
+</script>

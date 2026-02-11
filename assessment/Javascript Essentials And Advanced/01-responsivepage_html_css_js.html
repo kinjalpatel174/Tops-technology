@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tecocraft - Customer Interaction Form</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f5f7fb;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .form-container {
+      background: #fff;
+      width: 100%;
+      max-width: 700px;
+      padding: 24px;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #444;
+    }
+
+    input, select, textarea {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      outline: none;
+      font-size: 14px;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: #4f46e5;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .btn {
+      grid-column: 1 / -1;
+      padding: 12px;
+      background: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: #4338ca;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 600px) {
+      form {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Customer Interaction Form</h2>
+
+    <form id="customerForm" novalidate>
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="fullName" placeholder="Enter full name" required />
+      </div>
+
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" id="phone" placeholder="Enter phone number" required />
+      </div>
+
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="email" placeholder="Enter email address" required />
+      </div>
+
+      <div class="form-group">
+        <label>Vehicle Details</label>
+        <select id="vehicle">
+          <option value="">Select vehicle</option>
+          <option>Two Wheeler</option>
+          <option>Four Wheeler</option>
+          <option>Commercial Vehicle</option>
+        </select>
+      </div>
+
+      <div class="form-group full">
+        <label>Complaint / Issue</label>
+        <textarea id="complaint" placeholder="Describe your issue..." required></textarea>
+      </div>
+
+      <button type="submit" class="btn">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById("customerForm");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      alert("Form structure ready. Validation & submission logic will be added next.");
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>View Submissions</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f7f9fc;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .search-box {
+      max-width: 400px;
+      margin: 0 auto 20px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .search-box input {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background: #0d6efd;
+      color: white;
+    }
+
+    .no-data {
+      text-align: center;
+      margin-top: 20px;
+      color: red;
+      font-weight: bold;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Customer Submissions</h2>
+
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search by Name or Vehicle..." />
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Full Name</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Vehicle</th>
+        <th>Complaint</th>
+        <th>Time</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      <!-- Dynamic rows -->
+    </tbody>
+  </table>
+
+  <div id="noData" class="no-data">No data found</div>
+
+  <script>
+    class SubmissionViewer {
+      constructor(tableBodyId, searchInputId, noDataId) {
+        this.tableBody = document.getElementById(tableBodyId);
+        this.searchInput = document.getElementById(searchInputId);
+        this.noData = document.getElementById(noDataId);
+
+        this.data = this.readFromLocalStorage();
+        this.renderTable(this.data);
+        this.initEvents();
+      }
+
+      readFromLocalStorage() {
+        return JSON.parse(localStorage.getItem("customerForms")) || [];
+      }
+
+      initEvents() {
+        this.searchInput.addEventListener("input", () => {
+          const query = this.searchInput.value.toLowerCase();
+          const filtered = this.data.filter(item =>
+            item.name.toLowerCase().includes(query) ||
+            item.vehicle.toLowerCase().includes(query)
+          );
+          this.renderTable(filtered);
+        });
+      }
+
+      renderTable(data) {
+        this.tableBody.innerHTML = "";
+
+        if (data.length === 0) {
+          this.noData.style.display = "block";
+          return;
+        } else {
+          this.noData.style.display = "none";
+        }
+
+        data.forEach((item, index) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${item.name}</td>
+            <td>${item.phone}</td>
+            <td>${item.email}</td>
+            <td>${item.vehicle}</td>
+            <td>${item.complaint}</td>
+            <td>${new Date(item.time).toLocaleString()}</td>
+          `;
+          this.tableBody.appendChild(row);
+        });
+      }
+    }
+
+    // Initialize viewer
+    document.addEventListener("DOMContentLoaded", () => {
+      new SubmissionViewer("tableBody", "searchInput", "noData");
+    });
+  </script>
+
+</body>
+</html>
