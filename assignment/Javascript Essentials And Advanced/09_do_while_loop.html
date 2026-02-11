@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Do-While Input Example</title>
+</head>
+<body>
+    <h2>Enter a number greater than 10</h2>
+
+    <script>
+        let num;
+
+        do {
+            num = parseInt(prompt("Enter a number greater than 10:"));
+        } while (num <= 10 || isNaN(num));
+
+        alert("Thank you! You entered: " + num);
+    </script>
+</body>
+</html>

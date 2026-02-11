@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Try Catch Example</title>
+</head>
+<body>
+    <h2>Check Console for Output</h2>
+
+    <script>
+        function divide(a, b) {
+            try {
+                if (b === 0) {
+                    throw new Error("Cannot divide by zero");
+                }
+                let result = a / b;
+                console.log("Result:", result);
+            } catch (error) {
+                console.log("Error:", error.message);
+                alert("Error: " + error.message);
+            }
+        }
+
+        // Test cases
+        divide(10, 2);   // valid
+        divide(10, 0);   // divide by zero (handled)
+    </script>
+</body>
+</html>
